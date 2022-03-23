@@ -6,4 +6,7 @@
     <string name="false_button">False</string>
     <string name="next_button">Next</string>
     <string name="placeholder">"Hello World this where we are going to add the actual text to od the shown! "</string>
+    <string name="text_formatted">Question: %d/%d</string>
+    <string name="correct_answer">Correct</string>
+    <string name="incorrect">Incorrect</string>
 </resources>

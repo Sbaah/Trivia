@@ -1,24 +1,18 @@
 package com.sefa.trivia;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.snackbar.Snackbar;
-import com.sefa.trivia.controller.AppController;
-import com.sefa.trivia.data.AnswerListAsyncResponse;
 import com.sefa.trivia.data.Repository;
 import com.sefa.trivia.databinding.ActivityMainBinding;
 import com.sefa.trivia.model.Question;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +30,13 @@ public class MainActivity extends AppCompatActivity{
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
 
-        questionList= new Repository().getQuestion(questionArrayList -> {
-        binding.questionTextview.setText(questionArrayList.get(currentQuestionIndex).getAnswer());
-
-        // binding.textViewOutOf.setText(String.format(getString(R.string.text_formatted), currentQuestionIndex, questionArrayList.size()));
+        questionList = new Repository().getQuestion(questionArrayList -> {
+                    binding.questionTextview.setText(questionArrayList.get(currentQuestionIndex)
+                            .getAnswer());
             updateCounter(questionArrayList);
     });
+
+
     binding.buttonNext.setOnClickListener(view -> {
         currentQuestionIndex = (currentQuestionIndex + 1) % questionList.size();
         updateQuestion();
@@ -65,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
         int snackMessageId = 0;
         if (userChoseCorrect == answer) {
             snackMessageId = R.string.correct_answer;
-            //fadeAnimation();
+            fadeAnimation();
         } else {
             snackMessageId = R.string.incorrect;
             //shakeAnimation();
@@ -85,5 +80,56 @@ public class MainActivity extends AppCompatActivity{
                 currentQuestionIndex, questionArrayList.size()));
     }
 
+
+
+    private void fadeAnimation() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+        alphaAnimation.setDuration(300);
+        alphaAnimation.setRepeatCount(1);
+        alphaAnimation.setRepeatMode(Animation.REVERSE);
+
+        binding.cardView.setAnimation(alphaAnimation);
+
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.questionTextview.setTextColor(Color.GREEN);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.questionTextview.setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+//    private void shakeAnimation() {
+//        Animation shake = AnimationUtils.loadAnimation(MainActivity.this,
+//                R.anim.shake_animation);
+//        binding.cardView.setAnimation(shake);
+//
+//        shake.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//                binding.questionTextview.setTextColor(Color.RED);
+//
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                binding.questionTextview.setTextColor(Color.WHITE);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//
+//            }
+//        });
+//    }
 
 }

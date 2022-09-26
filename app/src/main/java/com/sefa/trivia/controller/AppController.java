@@ -15,15 +15,15 @@ public class AppController extends Application {
     private static AppController instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
-    private static Context ctx;
+//    private static Context ctx;
 
     public AppController() {
     }
 
-    private AppController(Context context) {
-        ctx = context;
-        requestQueue = getRequestQueue();
-
+//    private AppController(Context context) {
+//        ctx = context;
+//        requestQueue = getRequestQueue();
+//
 //        imageLoader = new ImageLoader(requestQueue,
 //                new ImageLoader.ImageCache() {
 //                    private final LruCache<String, Bitmap>
@@ -39,7 +39,7 @@ public class AppController extends Application {
 //                        cache.put(url, bitmap);
 //                    }
 //                });
-    }
+//    }
 
      public static synchronized AppController getInstance(){
 //    public static synchronized AppController getInstance() {
@@ -55,7 +55,8 @@ public class AppController extends Application {
         if (requestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
-            requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
+           // requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
         }
         return requestQueue;
     }
@@ -71,6 +72,6 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance=this;
+        instance = this;
     }
 }
